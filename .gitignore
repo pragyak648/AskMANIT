@@ -53,3 +53,9 @@ logs/*
 # OS
 .DS_Store
 Thumbs.db
+
+# Machine / Personal / Hardware artifacts
+hp/
+*sign*
+*.jpeg
+*.jpg
