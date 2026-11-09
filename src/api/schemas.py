@@ -18,7 +18,7 @@ class QueryRequest(BaseModel):
 
     question: str = Field(
         ...,
-        min_length=3,
+        min_length=1,
         max_length=1000,
         description="The student's question about MANIT academic policies.",
         examples=["What is the minimum attendance to sit for exams?"],
@@ -28,6 +28,10 @@ class QueryRequest(BaseModel):
         ge=1,
         le=20,
         description="Number of source chunks to retrieve and return.",
+    )
+    chat_history: Optional[list[dict[str, str]]] = Field(
+        default=None,
+        description="Prior conversation turns for follow-up query contextualization.",
     )
 
 
@@ -62,6 +66,9 @@ class TokenCounts(BaseModel):
     prompt_tokens: int
     completion_tokens: int
     total_tokens: int
+    estimated_cost_usd: float = Field(
+        default=0.0, description="Estimated dollar cost for prompt and completion tokens."
+    )
 
 
 class QueryResponse(BaseModel):

@@ -5,8 +5,14 @@ Loads settings from environment variables (via .env file) and exposes
 typed settings objects for use throughout the application.
 """
 
+import os
 from pathlib import Path
 from typing import Literal
+
+# Environment defaults for local stability
+os.environ.setdefault("ANONYMIZED_TELEMETRY", "False")
+os.environ.setdefault("HF_HUB_OFFLINE", "1")
+os.environ.setdefault("TRANSFORMERS_OFFLINE", "1")
 
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict

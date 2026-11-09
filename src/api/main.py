@@ -9,8 +9,13 @@ from __future__ import annotations
 
 import time
 import json
+import sys
 from pathlib import Path
 
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -20,8 +25,21 @@ from src.api.routes import router
 from src.config import settings, PROJECT_ROOT
 
 # ---------------------------------------------------------------------------
-# App metadata
+# Lifespan context manager
 # ---------------------------------------------------------------------------
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Record startup time and pre-warm RAG pipeline."""
+    app.state.startup_time = time.time()
+    try:
+        from src.generation.rag_pipeline import get_pipeline
+        pipeline = get_pipeline()
+        pipeline.run_query("warmup", top_k_final=1)
+    except Exception as exc:
+        print(f"[Warning] Pipeline warmup failed: {exc}")
+    yield
+
 app = FastAPI(
     title="AskMANIT API",
     description=(
@@ -32,6 +50,7 @@ app = FastAPI(
     docs_url="/docs",
     redoc_url="/redoc",
     openapi_url="/openapi.json",
+    lifespan=lifespan,
 )
 
 # ---------------------------------------------------------------------------
@@ -44,27 +63,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# ---------------------------------------------------------------------------
-# Startup / Shutdown lifecycle
-# ---------------------------------------------------------------------------
-
-@app.on_event("startup")
-async def on_startup():
-    """Record startup time and (optionally) pre-warm the pipeline."""
-    app.state.startup_time = time.time()
-
-    # Pre-warm: load embedder and vector store so the first query is fast
-    try:
-        from src.retrieval.vector_store import get_vector_store  # noqa: PLC0415
-        vs = get_vector_store()
-        stats = vs.get_collection_stats()
-        print(
-            f"[AskMANIT] ChromaDB ready — {stats['document_count']} chunks in collection."
-        )
-    except Exception as exc:
-        print(f"[AskMANIT] Warning: could not pre-warm vector store: {exc}")
-
 
 # ---------------------------------------------------------------------------
 # Error handlers
@@ -80,9 +78,7 @@ async def validation_error_handler(request: Request, exc: ValidationError):
 
 @app.exception_handler(Exception)
 async def generic_error_handler(request: Request, exc: Exception):
-    # Don't expose stack traces in production; log them server-side
     error_type = type(exc).__name__
-    # Check for common LLM API errors
     if "AuthenticationError" in error_type or "APIStatusError" in error_type:
         return JSONResponse(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,

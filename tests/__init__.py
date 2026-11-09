@@ -1,0 +1,4 @@
+"""
+AskMANIT test suite package.
+"""
+

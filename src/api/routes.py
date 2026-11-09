@@ -60,7 +60,7 @@ async def root():
 )
 async def health(request: Request):
     """Return service health, document count, and config info."""
-    startup_time: float = request.app.state.startup_time
+    startup_time: float = getattr(request.app.state, "startup_time", time.time())
 
     try:
         vs = get_vector_store()
@@ -95,7 +95,11 @@ async def query(body: QueryRequest):
     """
     pipeline = get_pipeline()
     try:
-        result = pipeline.run_query(body.question, top_k_final=body.top_k)
+        result = pipeline.run_query(
+            body.question,
+            top_k_final=body.top_k,
+            chat_history=body.chat_history,
+        )
     except Exception as exc:
         raise HTTPException(
             status_code=500,

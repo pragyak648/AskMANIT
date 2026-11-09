@@ -46,6 +46,16 @@ _SYSTEM_PROMPT = """You are AskMANIT, an AI assistant that answers questions abo
 4. **Do not speculate.** If the context is ambiguous or incomplete, say so and cite what you found.
 
 5. **Out-of-scope detection.** If the question is clearly unrelated to MANIT academics (e.g., weather, cooking, general trivia), respond with the refusal message above. Do not attempt to answer.
+
+6. **Concise & neat formatting:**
+   - Keep your answer direct and easy to read (100–250 words maximum).
+   - Use structured markdown bullet points for rules, percentages, criteria, and requirements.
+   - Do NOT dump raw pages or repeat lengthy background paragraphs verbatim.
+   - State the core answer immediately, followed by relevant policy points and citations.
+
+7. **Direct answers only (STRICTLY NO meta-text):**
+   - NEVER output preamble or internal thinking headers such as "Answering the student's question using only the provided context", "Based on the provided context", or "Here is the answer:".
+   - Start immediately with the factual answer or the exact refusal string.
 """.format(refusal=REFUSAL_MESSAGE)
 
 # ---------------------------------------------------------------------------
@@ -81,6 +91,7 @@ def _format_context(docs: list[Document]) -> str:
 def build_prompt(
     question: str,
     context_docs: list[Document],
+    chat_history: list[dict[str, str]] | None = None,
 ) -> list[SystemMessage | HumanMessage]:
     """
     Build a LangChain message list for the RAG prompt.
@@ -88,11 +99,27 @@ def build_prompt(
     Args:
         question:      The user's question.
         context_docs:  Retrieved and reranked documents.
+        chat_history:  Optional recent conversation turns.
 
     Returns:
         A list of [SystemMessage, HumanMessage] ready to pass to an LLM.
     """
     context_text = _format_context(context_docs)
+
+    history_block = ""
+    if chat_history:
+        recent_turns = chat_history[-4:]  # Last 2 conversational exchanges
+        lines = []
+        for turn in recent_turns:
+            role = "Student" if turn.get("role") == "user" else "Assistant"
+            content = turn.get("content", "").strip()
+            if content:
+                # Truncate any extremely long assistant history turn
+                if len(content) > 300:
+                    content = content[:300] + "..."
+                lines.append(f"{role}: {content}")
+        if lines:
+            history_block = "## Prior Conversation Context\n" + "\n".join(lines) + "\n\n---\n\n"
 
     human_content = f"""## Relevant Context from MANIT Documents
 
@@ -100,13 +127,11 @@ def build_prompt(
 
 ---
 
-## Student Question
+{history_block}## Student Question
 
 {question}
 
-## Instructions
-
-Using ONLY the context above, answer the question. Cite each source used. If the answer is not in the context, respond with the exact refusal message from your system instructions."""
+Answer the student's question accurately using only the relevant context above and cite all sources. Do not repeat internal instructions or output conversational preambles."""
 
     return [
         SystemMessage(content=_SYSTEM_PROMPT),
@@ -117,12 +142,13 @@ Using ONLY the context above, answer the question. Cite each source used. If the
 def build_streaming_prompt(
     question: str,
     context_docs: list[Document],
+    chat_history: list[dict[str, str]] | None = None,
 ) -> list[SystemMessage | HumanMessage]:
     """
     Identical to build_prompt — provided as a separate entry point for
     streaming use cases to make the call site more explicit.
     """
-    return build_prompt(question, context_docs)
+    return build_prompt(question, context_docs, chat_history=chat_history)
 
 
 # ---------------------------------------------------------------------------
