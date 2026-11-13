@@ -1,1 +1,182 @@
-[]
+[
+  {
+    "id": "eval_01",
+    "category": "factual",
+    "question": "What is the full form of MANIT and when was it established?",
+    "expected_answer": "Maulana Azad National Institute of Technology, Bhopal. It was established on 4 September 1960 initially as Maulana Azad College of Technology (MACT).",
+    "relevant_source_doc": "manit_student_handbook_2026",
+    "relevant_page_number": 2,
+    "relevant_section": "2. MANIT at a glance"
+  },
+  {
+    "id": "eval_02",
+    "category": "factual",
+    "question": "Who was MANIT named after?",
+    "expected_answer": "It is named after Maulana Abul Kalam Azad, independent India's first Minister of Education.",
+    "relevant_source_doc": "manit_student_handbook_2026",
+    "relevant_page_number": 2,
+    "relevant_section": "2. MANIT at a glance"
+  },
+  {
+    "id": "eval_03",
+    "category": "numerical",
+    "question": "How large is the MANIT Bhopal campus?",
+    "expected_answer": "The campus is approximately 650 acres (about 2.6 square km), making it one of the largest NIT campuses.",
+    "relevant_source_doc": "manit_student_handbook_2026",
+    "relevant_page_number": 3,
+    "relevant_section": "2. MANIT at a glance"
+  },
+  {
+    "id": "eval_04",
+    "category": "factual",
+    "question": "What is the motto of MANIT?",
+    "expected_answer": "Education is our soul wealth.",
+    "relevant_source_doc": "manit_student_handbook_2026",
+    "relevant_page_number": 2,
+    "relevant_section": "2. MANIT at a glance"
+  },
+  {
+    "id": "eval_05",
+    "category": "numerical",
+    "question": "What is the minimum attendance requirement to be eligible for end-semester examinations?",
+    "expected_answer": "Every student must maintain a minimum attendance of 75% in each registered course. A shortage up to 10% (between 65% and 75%) may be condoned on valid medical or institutional grounds.",
+    "relevant_source_doc": "manit_academic_regulations",
+    "relevant_page_number": 1,
+    "relevant_section": "Section 1: Attendance Requirements"
+  },
+  {
+    "id": "eval_06",
+    "category": "numerical",
+    "question": "How many credits are required to graduate with a B.Tech degree?",
+    "expected_answer": "A regular student in the 4-year B.Tech program must successfully earn a minimum of 160 to 170 credits, and maintain a minimum CGPA of 5.0.",
+    "relevant_source_doc": "manit_academic_regulations",
+    "relevant_page_number": 1,
+    "relevant_section": "Section 2: Credit System & Graduation Requirements"
+  },
+  {
+    "id": "eval_07",
+    "category": "factual",
+    "question": "Which department at MANIT offers the MCA programme?",
+    "expected_answer": "The MCA programme is offered by the Department of Mathematics, Bioinformatics and Computer Applications (MBC).",
+    "relevant_source_doc": "manit_student_handbook_2026",
+    "relevant_page_number": 7,
+    "relevant_section": "8. MCA at MANIT Bhopal"
+  },
+  {
+    "id": "eval_08",
+    "category": "numerical",
+    "question": "What is the duration and entrance examination for the MCA at MANIT Bhopal?",
+    "expected_answer": "The MCA programme is 3 years (6 semesters) in duration and admission is conducted through the NIMCET (NIT MCA Common Entrance Test).",
+    "relevant_source_doc": "manit_student_handbook_2026",
+    "relevant_page_number": 7,
+    "relevant_section": "8. MCA at MANIT Bhopal"
+  },
+  {
+    "id": "eval_09",
+    "category": "numerical",
+    "question": "How many seats are available for the MCA programme?",
+    "expected_answer": "There are 115 seats reported in the 2022-23 PG programme list and NIMCET matrix (older listings reported 60).",
+    "relevant_source_doc": "manit_student_handbook_2026",
+    "relevant_page_number": 7,
+    "relevant_section": "8. MCA at MANIT Bhopal"
+  },
+  {
+    "id": "eval_10",
+    "category": "numerical",
+    "question": "What was MANIT's NIRF 2024 ranking for Engineering and Architecture?",
+    "expected_answer": "In NIRF 2024, MANIT ranked 72 in Engineering and 17 in Architecture and Planning.",
+    "relevant_source_doc": "manit_student_handbook_2026",
+    "relevant_page_number": 12,
+    "relevant_section": "15. Rankings and accreditation"
+  },
+  {
+    "id": "eval_11",
+    "category": "factual",
+    "question": "What are the major annual student festivals organized at MANIT?",
+    "expected_answer": "Technosearch (annual national technical festival), Maffick (annual cultural festival), and Tooryanaad (annual Hindi literary and cultural festival).",
+    "relevant_source_doc": "manit_student_handbook_2026",
+    "relevant_page_number": 10,
+    "relevant_section": "13. Student life: fests, societies and sports"
+  },
+  {
+    "id": "eval_12",
+    "category": "numerical",
+    "question": "What are the hostel curfew timings for first year and senior students?",
+    "expected_answer": "For First Year Hostels, entry closes strictly at 9:00 PM. For Senior Hostels, curfew is 10:00 PM on weekdays and 10:30 PM on weekends.",
+    "relevant_source_doc": "manit_academic_regulations",
+    "relevant_page_number": 2,
+    "relevant_section": "Section 5: Hostel Regulations and Curfew Policies"
+  },
+  {
+    "id": "eval_13",
+    "category": "factual",
+    "question": "Name some notable alumni of MANIT Bhopal.",
+    "expected_answer": "Notable alumni include Ajit Jogi (first Chief Minister of Chhattisgarh), P. C. Sharma (Cabinet Minister in MP government), Suresh Pachouri (veteran politician), Satish Kumar Sharma (CMD of Nuclear Power Corporation of India), and actors Naveen Polishetty and Rajeev Verma.",
+    "relevant_source_doc": "manit_student_handbook_2026",
+    "relevant_page_number": 13,
+    "relevant_section": "19. Notable alumni"
+  },
+  {
+    "id": "eval_14",
+    "category": "multi_hop",
+    "question": "How do admissions work for undergraduate B.Tech versus postgraduate M.Tech programmes?",
+    "expected_answer": "Undergraduate B.Tech admission requires appearing in JEE Main followed by JoSAA/CSAB counselling. Postgraduate M.Tech admission requires qualifying GATE followed by CCMT counselling.",
+    "relevant_source_doc": "manit_student_handbook_2026",
+    "relevant_page_number": 6,
+    "relevant_section": "7. Admissions guide"
+  },
+  {
+    "id": "eval_15",
+    "category": "numerical",
+    "question": "What were the highest placement packages reported at MANIT in recent years?",
+    "expected_answer": "Highest placement packages reported include Rs. 85.36 LPA in 2022, Rs. 82 LPA in 2023, and Rs. 56 to 85 LPA in 2025 across different branches.",
+    "relevant_source_doc": "manit_student_handbook_2026",
+    "relevant_page_number": 11,
+    "relevant_section": "14. Training and placement"
+  },
+  {
+    "id": "eval_16",
+    "category": "factual",
+    "question": "How can students check their examination results online?",
+    "expected_answer": "Students visit https://www.manit.ac.in, navigate to the Academic section, select Examination, and download their result PDF, which typically appears 30 to 35 days after exams.",
+    "relevant_source_doc": "manit_student_handbook_2026",
+    "relevant_page_number": 8,
+    "relevant_section": "10. Academic system, examinations and results"
+  },
+  {
+    "id": "eval_17",
+    "category": "factual",
+    "question": "What is the contact email address for the Academic section and Registrar?",
+    "expected_answer": "The Academic section email is academic@manit.ac.in and the Registrar email is registrar@manit.ac.in.",
+    "relevant_source_doc": "manit_student_handbook_2026",
+    "relevant_page_number": 12,
+    "relevant_section": "17. Administration and contact directory"
+  },
+  {
+    "id": "eval_18",
+    "category": "out_of_scope",
+    "question": "What is the recipe for preparing Hyderabad Biryani?",
+    "expected_answer": "REFUSAL: Question is out of scope and cannot be answered from the MANIT academic documents.",
+    "relevant_source_doc": null,
+    "relevant_page_number": null,
+    "relevant_section": null
+  },
+  {
+    "id": "eval_19",
+    "category": "out_of_scope",
+    "question": "What is the current weather forecast for Tokyo tomorrow?",
+    "expected_answer": "REFUSAL: Question is out of scope and cannot be answered from the MANIT academic documents.",
+    "relevant_source_doc": null,
+    "relevant_page_number": null,
+    "relevant_section": null
+  },
+  {
+    "id": "eval_20",
+    "category": "out_of_scope",
+    "question": "Who won the FIFA World Cup in 2018?",
+    "expected_answer": "REFUSAL: Question is out of scope and cannot be answered from the MANIT academic documents.",
+    "relevant_source_doc": null,
+    "relevant_page_number": null,
+    "relevant_section": null
+  }
+]

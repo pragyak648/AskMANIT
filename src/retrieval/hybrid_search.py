@@ -53,6 +53,9 @@ class _BM25Index:
             ) from e
 
         self._docs = docs
+        if not docs:
+            self._bm25 = None
+            return
         tokenized = [doc.page_content.lower().split() for doc in docs]
         self._bm25 = BM25Okapi(tokenized)
 
@@ -63,7 +66,7 @@ class _BM25Index:
         Returns:
             List of (Document, bm25_score) sorted descending by score.
         """
-        if not self._docs:
+        if not self._docs or self._bm25 is None:
             return []
         tokens = query.lower().split()
         scores = self._bm25.get_scores(tokens)

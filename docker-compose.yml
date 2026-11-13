@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    container_name: askmanit-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - API_BASE_URL=http://backend:8000
+      - LLM_PROVIDER=local
+      - CHROMA_PERSIST_DIRECTORY=data/chroma_db
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    command: uvicorn src.api.main:app --host 0.0.0.0 --port 8000
+
+  frontend:
+    build: .
+    container_name: askmanit-frontend
+    ports:
+      - "8501:8501"
+    environment:
+      - API_BASE_URL=http://backend:8000
+    depends_on:
+      - backend
+    volumes:
+      - ./logs:/app/logs
+    command: streamlit run frontend/streamlit_app.py --server.port 8501 --server.address 0.0.0.0
+

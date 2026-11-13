@@ -118,37 +118,38 @@ def _extract_text_page(page: "fitz.Page") -> str:
 
 def _extract_table_page(page: "fitz.Page") -> tuple[str, str | None]:
     """
-    Extract a table-heavy page.
-
-    Tries unstructured first for HTML-aware extraction; falls back to PyMuPDF
-    text extraction with tab → space normalisation if unstructured is not
-    available or fails.
-
-    Returns:
-        (text, raw_html) — raw_html is None on fallback.
+    Extract a table-heavy page using PyMuPDF's native table parser.
+    Formats tables into clean Markdown tables for optimal embedding and retrieval.
     """
-    # Attempt unstructured extraction
     try:
-        from unstructured.partition.pdf import partition_pdf  # noqa: PLC0415
+        tabs = page.find_tables()
+        if tabs.tables:
+            table_markdowns = []
+            for t in tabs.tables:
+                extracted = t.extract()
+                if extracted and len(extracted) > 1:
+                    headers = extracted[0]
+                    col_count = len(headers)
+                    md_rows = [
+                        "| " + " | ".join(str(c or "").strip() for c in headers) + " |",
+                        "| " + " | ".join(["---"] * col_count) + " |",
+                    ]
+                    for row in extracted[1:]:
+                        md_rows.append("| " + " | ".join(str(c or "").strip() for c in row) + " |")
+                    table_markdowns.append("\n".join(md_rows))
 
-        elements = partition_pdf(
-            filename=str(page.parent.name),  # type: ignore[attr-defined]
-            page_number=page.number + 1,
-            strategy="hi_res",
-            include_page_breaks=False,
-        )
-        texts = [str(el) for el in elements if str(el).strip()]
-        combined = "\n".join(texts)
-        # Build a minimal HTML for storage
-        raw_html = "<br>".join(texts)
-        return combined, raw_html
-
+            if table_markdowns:
+                raw_text = page.get_text("text").strip()
+                combined = raw_text + "\n\n" + "\n\n".join(table_markdowns)
+                return combined.strip(), "\n\n".join(table_markdowns)
     except Exception:
-        # Fallback: PyMuPDF text with tab normalization
-        text = page.get_text("text")
-        text = text.replace("\t", "  ")
-        text = re.sub(r"\n{3,}", "\n\n", text)
-        return text.strip(), None
+        pass
+
+    # Fallback: PyMuPDF text with tab normalization
+    text = page.get_text("text")
+    text = text.replace("\t", "  ")
+    text = re.sub(r"\n{3,}", "\n\n", text)
+    return text.strip(), None
 
 
 # ---------------------------------------------------------------------------
