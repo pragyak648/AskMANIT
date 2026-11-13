@@ -84,7 +84,7 @@ def main():
         pdf_files = sorted(raw_dir.glob("*.pdf"))
 
     if not pdf_files:
-        print("\n⚠️  No PDF files found.")
+        print("\n  No PDF files found.")
         if not args.source:
             print(f"   Add PDFs to {PROJECT_ROOT / settings.raw_data_path}")
             print("   See data/raw/SOURCES.md for download instructions.")
@@ -99,12 +99,12 @@ def main():
 
     for pdf_path in pdf_files:
         if not pdf_path.exists():
-            print(f"\n  ❌ File not found: {pdf_path}")
+            print(f"\n  File not found: {pdf_path}")
             continue
         try:
             total_chunks += ingest_file(pdf_path, vs)
         except Exception as exc:
-            print(f"\n  ❌ Error processing {pdf_path.name}: {exc}")
+            print(f"\n   Error processing {pdf_path.name}: {exc}")
 
     total_elapsed = time.time() - total_start
     stats = vs.get_collection_stats()
